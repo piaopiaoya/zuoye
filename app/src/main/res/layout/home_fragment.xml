@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    <androidx.appcompat.widget.SearchView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
+
     <LinearLayout
         android:id="@+id/LLout"
         android:layout_width="match_parent"
@@ -31,13 +29,13 @@
             android:textColor="@color/black" />
     </LinearLayout>
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:layout_constraintTop_toBottomOf="@id/LLout" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/LLout"
+        android:id="@+id/rv"/>
 
-    
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
