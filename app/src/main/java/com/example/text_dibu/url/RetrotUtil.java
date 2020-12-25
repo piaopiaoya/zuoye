@@ -64,10 +64,7 @@ public class RetrotUtil implements NetWork{
                             Type[] genericInterfaces = callBack.getClass().getGenericInterfaces();
                             Type[] actualTypeArguments = ((ParameterizedType) genericInterfaces[0]).getActualTypeArguments();
                             Type t = actualTypeArguments[0];
-
                             callBack.OnNext(new Gson().fromJson(string,t));
-
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

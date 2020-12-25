@@ -2,6 +2,7 @@ package com.example.text_dibu.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
 
     @Override
     public void onNext(HomeBean homeBean) {
-//        bannerBeans.addAll(homeBean.getData().getBanner());
+        bannerBeans.addAll(homeBean.getData().getBanner());
         banner.setImages(homeBean.getData().getBanner());
         banner.setImageLoader(new ImageLoader() {
             @Override
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
 
     @Override
     public void onFail(String err) {
-
+        Log.d("TAG","banner——v错误信息："+err);
     }
 }
 

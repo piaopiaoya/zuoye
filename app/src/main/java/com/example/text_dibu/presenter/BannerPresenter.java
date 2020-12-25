@@ -31,4 +31,3 @@ public class BannerPresenter implements MainContract.getBannerPresenter {
         });
     }
 }
-

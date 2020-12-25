@@ -382,7 +382,7 @@ public class HomeBean {
             private String pic_url;
             private Integer sort_order;
             private Integer is_show;
-            private Integer floor_price;
+            private Double floor_price;
             private String app_list_pic_url;
             private Integer is_new;
             private String new_pic_url;
@@ -444,11 +444,11 @@ public class HomeBean {
                 this.is_show = is_show;
             }
 
-            public Integer getFloor_price() {
+            public Double getFloor_price() {
                 return floor_price;
             }
 
-            public void setFloor_price(Integer floor_price) {
+            public void setFloor_price(Double floor_price) {
                 this.floor_price = floor_price;
             }
 
@@ -516,7 +516,7 @@ public class HomeBean {
             private String item_pic_url;
             private String subtitle;
             private Integer topic_category_id;
-            private Integer price_info;
+            private double price_info;
             private String read_count;
             private String scene_pic_url;
             private Integer topic_template_id;
@@ -580,7 +580,7 @@ public class HomeBean {
                 this.topic_category_id = topic_category_id;
             }
 
-            public Integer getPrice_info() {
+            public double getPrice_info() {
                 return price_info;
             }
 
@@ -683,7 +683,7 @@ public class HomeBean {
                 private Integer id;
                 private String name;
                 private String list_pic_url;
-                private Integer retail_price;
+                private double retail_price;
 
                 public Integer getId() {
                     return id;
@@ -709,7 +709,7 @@ public class HomeBean {
                     this.list_pic_url = list_pic_url;
                 }
 
-                public Integer getRetail_price() {
+                public double getRetail_price() {
                     return retail_price;
                 }
 
