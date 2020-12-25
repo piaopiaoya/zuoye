@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <!--    <androidx.appcompat.widget.SearchView-->
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="wrap_content"-->
     <LinearLayout
+        android:id="@+id/LLout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="#33000000"
         android:gravity="center"
-        android:id="@+id/LLout"
-        app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
-        android:background="#33000000">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_sousuo"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/sousuo"/>
+            android:src="@mipmap/sousuo" />
+
         <TextView
+            android:id="@+id/tv_sousuo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_sousuo"
+            android:backgroundTint="#33000000"
             android:text="商品搜索，共239款好物"
-            android:textColor="@color/black"
-            android:backgroundTint="#33000000"/>
+            android:textColor="@color/black" />
     </LinearLayout>
 
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:layout_constraintTop_toBottomOf="@id/LLout" />
 
-
+    
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
