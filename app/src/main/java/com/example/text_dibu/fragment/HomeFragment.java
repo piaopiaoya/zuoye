@@ -26,6 +26,7 @@ import com.example.text_dibu.adapter.NewAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
 import com.example.text_dibu.adapter.GridAdapter;
 import com.example.text_dibu.adapter.RvAdapter;
+import com.example.text_dibu.adapter.ZhuanAdapter;
 import com.example.text_dibu.bean.HomeBean;
 import com.example.text_dibu.contract.MainContract;
 import com.example.text_dibu.presenter.BannerPresenter;
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private HotAdapter hotAdapter;
     private ArrayList<HomeBean.DataBean.HotGoodsListBean> hotGoodsListBeans;
     private HotGoodAdapter hotGoodAdapter;
+    private ZhuanAdapter zhuanAdapter;
 
     @Nullable
     @Override
@@ -156,9 +158,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         hotAdapter = new HotAdapter(getActivity(), hot);
 
 
-        /**
-         设置线性布局
-         */
+
         GridLayoutHelper hotGood = new GridLayoutHelper(2);
         // 在构造函数设置每行的网格个数
         // 公共属性
@@ -177,6 +177,15 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         hotGoodAdapter = new HotGoodAdapter(getActivity(), hotGoodsListBeans, hotGood);
 
 
+        SingleLayoutHelper zhuan = new SingleLayoutHelper();
+        // 公共属性
+        zhuan.setItemCount(1);// 设置布局里Item个数
+        zhuan.setPadding(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        zhuan.setMargin(10, 10, 10, 10);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        zhuan.setBgColor(Color.WHITE);// 设置背景颜色
+        zhuan.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
+        zhuanAdapter = new ZhuanAdapter(getActivity(), zhuan);
+
         initAddAdapter();
     }
 
@@ -190,6 +199,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(netGoodAdapter);
         delegateAdapter.addAdapter(hotAdapter);
         delegateAdapter.addAdapter(hotGoodAdapter);
+        delegateAdapter.addAdapter(zhuanAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -224,6 +234,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         List<HomeBean.DataBean.HotGoodsListBean> hotGoodsList = homeBean.getData().getHotGoodsList();
         hotGoodsListBeans.addAll(hotGoodsList);
         hotGoodAdapter.notifyDataSetChanged();
+        zhuanAdapter.notifyDataSetChanged();
 
         initAddAdapter();
     }
