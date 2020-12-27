@@ -18,6 +18,7 @@ import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.text_dibu.R;
 import com.example.text_dibu.adapter.BrandAdapter;
+import com.example.text_dibu.adapter.HotAdapter;
 import com.example.text_dibu.adapter.NetGoodAdapter;
 import com.example.text_dibu.adapter.NewAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
@@ -48,6 +49,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private NewAdapter newAdapter;
     private ArrayList<HomeBean.DataBean.NewGoodsListBean> newGoodsListBeans;
     private NetGoodAdapter netGoodAdapter;
+    private HotAdapter hotAdapter;
 
     @Nullable
     @Override
@@ -138,8 +140,16 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         netGood.setSpanCount(2);// 设置每行多少个网格
         netGoodAdapter = new NetGoodAdapter(getActivity(), newGoodsListBeans, netGood);
 
-        
 
+        //第七行
+        SingleLayoutHelper hot = new SingleLayoutHelper();
+        // 公共属性
+        hot.setItemCount(1);// 设置布局里Item个数
+        hot.setPadding(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        hot.setMargin(10, 10, 10, 10);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        hot.setBgColor(Color.WHITE);// 设置背景颜色
+        hot.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
+        hotAdapter = new HotAdapter(getActivity(), hot);
 
         initAddAdapter();
     }
@@ -152,6 +162,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(brandAdapter);
         delegateAdapter.addAdapter(newAdapter);
         delegateAdapter.addAdapter(netGoodAdapter);
+        delegateAdapter.addAdapter(hotAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -181,6 +192,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         List<HomeBean.DataBean.NewGoodsListBean> newGoodsList = homeBean.getData().getNewGoodsList();
         newGoodsListBeans.addAll(newGoodsList);
         netGoodAdapter.notifyDataSetChanged();
+        hotAdapter.notifyDataSetChanged();
     }
 
     @Override
