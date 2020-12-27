@@ -16,5 +16,18 @@ public class MainContract {
     public interface getBannerModel{
         <T> void getBannerModel(String url, HttpCallBack<T> callBack);
     }
+
+    public interface getChannilView{
+        void onNext(HomeBean homeBean);
+        void onFail(String err);
+    }
+
+    public interface getChannilPresenter{
+        void getChannil();
+    }
+
+    public interface getChannilModel{
+        <T> void getChannilModel(String url, HttpCallBack<T> callBack);
+    }
 }
 

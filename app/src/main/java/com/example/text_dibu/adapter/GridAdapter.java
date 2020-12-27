@@ -1,4 +1,4 @@
-package com.example.text_dibu.fragment;
+package com.example.text_dibu.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -38,7 +38,7 @@ public class GridAdapter extends DelegateAdapter.Adapter<GridAdapter.ViewHolder>
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.grid_item, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.grid_item, parent,false);
         return new ViewHolder(view);
     }
 
@@ -50,7 +50,7 @@ public class GridAdapter extends DelegateAdapter.Adapter<GridAdapter.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return 5;
+        return list.size();
     }
 
 

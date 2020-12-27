@@ -1,13 +1,11 @@
 package com.example.text_dibu.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,16 +16,16 @@ import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
-import com.bumptech.glide.Glide;
 import com.example.text_dibu.R;
+import com.example.text_dibu.adapter.GridAdapter;
 import com.example.text_dibu.adapter.RvAdapter;
 import com.example.text_dibu.bean.HomeBean;
 import com.example.text_dibu.contract.MainContract;
 import com.example.text_dibu.presenter.BannerPresenter;
 import com.youth.banner.Banner;
-import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment implements MainContract.getBannerView {
 
@@ -60,10 +58,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         //第一行  banner
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
         singleLayoutHelper.setItemCount(1);
-        singleLayoutHelper.setPadding(20,20,20,20);
-        singleLayoutHelper.setMargin(20,20,20,20);
         singleLayoutHelper.setBgColor(Color.WHITE);
-        singleLayoutHelper.setAspectRatio(6);
         rvAdapter = new RvAdapter(bannerBeans,getActivity(), singleLayoutHelper);
 
         //第二行
@@ -111,6 +106,9 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     public void onNext(HomeBean homeBean) {
         bannerBeans.addAll(homeBean.getData().getBanner());
         rvAdapter.notifyDataSetChanged();
+        List<HomeBean.DataBean.ChannelBean> channel = homeBean.getData().getChannel();
+        channelBeans.addAll(channel);
+        gridAdapter.notifyDataSetChanged();
     }
 
     @Override

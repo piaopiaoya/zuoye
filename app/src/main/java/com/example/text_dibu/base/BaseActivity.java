@@ -17,32 +17,22 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
         if (presenter == null){
-            createPresenter();
+            presenter = add();
+            presenter.attachView(this);
         }
         initView(savedInstanceState);
         initData();
 
     }
 
-    public void createPresenter() {
-        Type[] genericInterfaces = getClass().getGenericInterfaces();
-        Type[] actualTypeArguments = ((ParameterizedType) genericInterfaces[0]).getActualTypeArguments();
-        Class<P> p = (Class<P>) actualTypeArguments[0];
-        try {
-            p1 = p.newInstance();
-            p1.attachView(this);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+    protected abstract P add();
 
-    }
+    protected abstract void createPresenter();
+
 
     protected abstract void initData();
 
     protected abstract void initView(Bundle savedInstanceState);
-
 
     protected abstract int getLayoutID();
 
