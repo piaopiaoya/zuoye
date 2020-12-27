@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
+import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.text_dibu.R;
 import com.example.text_dibu.adapter.BrandAdapter;
 import com.example.text_dibu.adapter.HotAdapter;
+import com.example.text_dibu.adapter.HotGoodAdapter;
 import com.example.text_dibu.adapter.NetGoodAdapter;
 import com.example.text_dibu.adapter.NewAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
@@ -50,6 +52,8 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private ArrayList<HomeBean.DataBean.NewGoodsListBean> newGoodsListBeans;
     private NetGoodAdapter netGoodAdapter;
     private HotAdapter hotAdapter;
+    private ArrayList<HomeBean.DataBean.HotGoodsListBean> hotGoodsListBeans;
+    private HotGoodAdapter hotGoodAdapter;
 
     @Nullable
     @Override
@@ -151,6 +155,28 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         hot.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
         hotAdapter = new HotAdapter(getActivity(), hot);
 
+
+        /**
+         设置线性布局
+         */
+        GridLayoutHelper hotGood = new GridLayoutHelper(2);
+        // 在构造函数设置每行的网格个数
+        // 公共属性
+        hotGood.setItemCount(3);// 设置布局里Item个数
+//        gridLayoutHelper.setPadding(20, 20, 20, 20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+//        gridLayoutHelper.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        hotGood.setBgColor(Color.WHITE);// 设置背景颜色
+//        gridLayoutHelper.setAspectRatio(3);// 设置设置布局内每行布局的宽与高的比
+
+        // gridLayoutHelper特有属性（下面会详细说明）
+        hotGood.setWeights(new float[]{100});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+        hotGood.setVGap(20);// 控制子元素之间的垂直间距
+        hotGood.setHGap(20);// 控制子元素之间的水平间距
+        hotGood.setAutoExpand(false);//是否自动填充空白区域
+        hotGood.setSpanCount(1);// 设置每行多少个网格
+        hotGoodAdapter = new HotGoodAdapter(getActivity(), hotGoodsListBeans, hotGood);
+
+
         initAddAdapter();
     }
 
@@ -163,6 +189,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(newAdapter);
         delegateAdapter.addAdapter(netGoodAdapter);
         delegateAdapter.addAdapter(hotAdapter);
+        delegateAdapter.addAdapter(hotGoodAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -174,6 +201,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         channelBeans = new ArrayList<>();
         brandListBeans = new ArrayList<>();
         newGoodsListBeans = new ArrayList<>();
+        hotGoodsListBeans = new ArrayList<>();
 
     }
 
@@ -184,7 +212,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         List<HomeBean.DataBean.ChannelBean> channel = homeBean.getData().getChannel();
         channelBeans.addAll(channel);
         gridAdapter.notifyDataSetChanged();
-        initAddAdapter();
+
         List<HomeBean.DataBean.BrandListBean> brandList = homeBean.getData().getBrandList();
         brandListBeans.addAll(brandList);
         brandAdapter.notifyDataSetChanged();
@@ -193,6 +221,11 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         newGoodsListBeans.addAll(newGoodsList);
         netGoodAdapter.notifyDataSetChanged();
         hotAdapter.notifyDataSetChanged();
+        List<HomeBean.DataBean.HotGoodsListBean> hotGoodsList = homeBean.getData().getHotGoodsList();
+        hotGoodsListBeans.addAll(hotGoodsList);
+        hotGoodAdapter.notifyDataSetChanged();
+
+        initAddAdapter();
     }
 
     @Override
