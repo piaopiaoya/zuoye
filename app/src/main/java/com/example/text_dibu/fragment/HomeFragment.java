@@ -18,6 +18,7 @@ import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.text_dibu.R;
 import com.example.text_dibu.adapter.BrandAdapter;
+import com.example.text_dibu.adapter.NewAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
 import com.example.text_dibu.adapter.GridAdapter;
 import com.example.text_dibu.adapter.RvAdapter;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private DelegateAdapter delegateAdapter;
     private VirtualLayoutManager virtualLayoutManager;
     private BrandAdapter brandAdapter;
+    private NewAdapter newAdapter;
 
     @Nullable
     @Override
@@ -53,6 +55,10 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         initData();
         initVLayout(view);
         return view;
+    }
+
+    private void initData() {
+        bannerPresenter.getBanner();
     }
 
     private void initVLayout(View view) {
@@ -108,7 +114,16 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
 
         brandAdapter = new BrandAdapter(getActivity(), brandListBeans, gridLayoutHelper1);
 
-        
+
+        //第三行
+        SingleLayoutHelper newGood = new SingleLayoutHelper();
+        // 公共属性
+        newGood.setItemCount(1);// 设置布局里Item个数
+        newGood.setPadding(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        newGood.setMargin(10, 10, 10, 10);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        newGood.setBgColor(Color.WHITE);// 设置背景颜色
+        newGood.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
+        newAdapter = new NewAdapter(getActivity(), newGood);
 
 
         initAddAdapter();
@@ -120,13 +135,11 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(gridAdapter);
         delegateAdapter.addAdapter(tuiAdapter);
         delegateAdapter.addAdapter(brandAdapter);
+        delegateAdapter.addAdapter(newAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
 
-    private void initData() {
-        bannerPresenter.getBanner();
-    }
 
     private void initView(View view) {
         banner = view.findViewById(R.id.banner);
@@ -147,7 +160,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         List<HomeBean.DataBean.BrandListBean> brandList = homeBean.getData().getBrandList();
         brandListBeans.addAll(brandList);
         brandAdapter.notifyDataSetChanged();
-
+        newAdapter.notifyDataSetChanged();
     }
 
     @Override
