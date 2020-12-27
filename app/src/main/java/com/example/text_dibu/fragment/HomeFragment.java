@@ -18,6 +18,7 @@ import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.text_dibu.R;
 import com.example.text_dibu.adapter.BrandAdapter;
+import com.example.text_dibu.adapter.NetGoodAdapter;
 import com.example.text_dibu.adapter.NewAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
 import com.example.text_dibu.adapter.GridAdapter;
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private VirtualLayoutManager virtualLayoutManager;
     private BrandAdapter brandAdapter;
     private NewAdapter newAdapter;
+    private ArrayList<HomeBean.DataBean.NewGoodsListBean> newGoodsListBeans;
+    private NetGoodAdapter netGoodAdapter;
 
     @Nullable
     @Override
@@ -111,11 +114,9 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         gridLayoutHelper1.setHGap(20);// 控制子元素之间的水平间距
         gridLayoutHelper1.setAutoExpand(false);//是否自动填充空白区域
         gridLayoutHelper1.setSpanCount(2);// 设置每行多少个网格
-
         brandAdapter = new BrandAdapter(getActivity(), brandListBeans, gridLayoutHelper1);
 
-
-        //第三行
+        //第五行
         SingleLayoutHelper newGood = new SingleLayoutHelper();
         // 公共属性
         newGood.setItemCount(1);// 设置布局里Item个数
@@ -124,6 +125,20 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         newGood.setBgColor(Color.WHITE);// 设置背景颜色
         newGood.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
         newAdapter = new NewAdapter(getActivity(), newGood);
+
+
+        //第六行
+        GridLayoutHelper netGood = new GridLayoutHelper(2);
+        netGood.setItemCount(2);// 设置布局里Item个数gridLayoutHelper1.setBgColor(Color.WHITE);// 设置背景颜色
+        netGood.setAspectRatio(4);// 设置设置布局内每行布局的宽与高的比
+        netGood.setWeights(new float[]{50,50});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+        netGood.setVGap(20);// 控制子元素之间的垂直间距
+        netGood.setHGap(20);// 控制子元素之间的水平间距
+        netGood.setAutoExpand(false);//是否自动填充空白区域
+        netGood.setSpanCount(2);// 设置每行多少个网格
+        netGoodAdapter = new NetGoodAdapter(getActivity(), newGoodsListBeans, netGood);
+
+        
 
 
         initAddAdapter();
@@ -136,6 +151,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(tuiAdapter);
         delegateAdapter.addAdapter(brandAdapter);
         delegateAdapter.addAdapter(newAdapter);
+        delegateAdapter.addAdapter(netGoodAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -146,6 +162,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         bannerBeans = new ArrayList<>();
         channelBeans = new ArrayList<>();
         brandListBeans = new ArrayList<>();
+        newGoodsListBeans = new ArrayList<>();
 
     }
 
@@ -161,6 +178,9 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         brandListBeans.addAll(brandList);
         brandAdapter.notifyDataSetChanged();
         newAdapter.notifyDataSetChanged();
+        List<HomeBean.DataBean.NewGoodsListBean> newGoodsList = homeBean.getData().getNewGoodsList();
+        newGoodsListBeans.addAll(newGoodsList);
+        netGoodAdapter.notifyDataSetChanged();
     }
 
     @Override
