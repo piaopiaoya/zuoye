@@ -17,6 +17,7 @@ import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.text_dibu.R;
+import com.example.text_dibu.adapter.BrandAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
 import com.example.text_dibu.adapter.GridAdapter;
 import com.example.text_dibu.adapter.RvAdapter;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private TuiAdapter tuiAdapter;
     private DelegateAdapter delegateAdapter;
     private VirtualLayoutManager virtualLayoutManager;
+    private BrandAdapter brandAdapter;
 
     @Nullable
     @Override
@@ -58,13 +60,13 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         virtualLayoutManager = new VirtualLayoutManager(getActivity());
         RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool();
         rv.setRecycledViewPool(pool);
-        pool.setMaxRecycledViews(0,15);
+        pool.setMaxRecycledViews(0, 15);
 
         //第一行  banner
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
         singleLayoutHelper.setItemCount(1);
         singleLayoutHelper.setBgColor(Color.WHITE);
-        rvAdapter = new RvAdapter(bannerBeans,getActivity(), singleLayoutHelper);
+        rvAdapter = new RvAdapter(bannerBeans, getActivity(), singleLayoutHelper);
 
         //第二行
         //设置Grid布局
@@ -82,20 +84,31 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         gridLayoutHelper.setHGap(20);// 控制子元素之间的水平间距
         gridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
         gridLayoutHelper.setSpanCount(5);// 设置每行多少个网格
-        gridAdapter = new GridAdapter(getActivity(),channelBeans,gridLayoutHelper);
+        gridAdapter = new GridAdapter(getActivity(), channelBeans, gridLayoutHelper);
 
         //第三行
         SingleLayoutHelper sing = new SingleLayoutHelper();
         // 公共属性
         sing.setItemCount(1);// 设置布局里Item个数
-        sing.setPadding(20, 20, 20, 20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
-        sing.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
-        sing.setBgColor(Color.GRAY);// 设置背景颜色
+        sing.setPadding(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        sing.setMargin(10, 10, 10, 10);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        sing.setBgColor(Color.WHITE);// 设置背景颜色
         sing.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
-        tuiAdapter = new TuiAdapter(getActivity(),sing);
+        tuiAdapter = new TuiAdapter(getActivity(), sing);
 
+        //第四行
+        GridLayoutHelper gridLayoutHelper1 = new GridLayoutHelper(2);
+        gridLayoutHelper1.setItemCount(2);// 设置布局里Item个数gridLayoutHelper1.setBgColor(Color.WHITE);// 设置背景颜色
+        gridLayoutHelper1.setAspectRatio(4);// 设置设置布局内每行布局的宽与高的比
+        gridLayoutHelper1.setWeights(new float[]{50,50});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+        gridLayoutHelper1.setVGap(20);// 控制子元素之间的垂直间距
+        gridLayoutHelper1.setHGap(20);// 控制子元素之间的水平间距
+        gridLayoutHelper1.setAutoExpand(false);//是否自动填充空白区域
+        gridLayoutHelper1.setSpanCount(2);// 设置每行多少个网格
 
+        brandAdapter = new BrandAdapter(getActivity(), brandListBeans, gridLayoutHelper1);
 
+        
 
 
         initAddAdapter();
@@ -106,6 +119,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(rvAdapter);
         delegateAdapter.addAdapter(gridAdapter);
         delegateAdapter.addAdapter(tuiAdapter);
+        delegateAdapter.addAdapter(brandAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -130,14 +144,15 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         channelBeans.addAll(channel);
         gridAdapter.notifyDataSetChanged();
         initAddAdapter();
-        //        List<HomeBean.DataBean.BrandListBean> brandList = homeBean.getData().getBrandList();
-//        brandList.addAll(brandList);
-//        TuiAdapter.notifyDataSetChanged();
+        List<HomeBean.DataBean.BrandListBean> brandList = homeBean.getData().getBrandList();
+        brandListBeans.addAll(brandList);
+        brandAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     public void onFail(String err) {
-        Log.d("TAG","banner——v错误信息："+err);
+        Log.d("TAG", "banner——v错误信息：" + err);
     }
 }
 
