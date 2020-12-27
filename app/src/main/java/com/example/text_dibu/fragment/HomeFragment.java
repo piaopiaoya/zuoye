@@ -23,6 +23,7 @@ import com.example.text_dibu.adapter.HotAdapter;
 import com.example.text_dibu.adapter.HotGoodAdapter;
 import com.example.text_dibu.adapter.NetGoodAdapter;
 import com.example.text_dibu.adapter.NewAdapter;
+import com.example.text_dibu.adapter.TopicAdapter;
 import com.example.text_dibu.adapter.TuiAdapter;
 import com.example.text_dibu.adapter.GridAdapter;
 import com.example.text_dibu.adapter.RvAdapter;
@@ -56,6 +57,8 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private ArrayList<HomeBean.DataBean.HotGoodsListBean> hotGoodsListBeans;
     private HotGoodAdapter hotGoodAdapter;
     private ZhuanAdapter zhuanAdapter;
+    private ArrayList<HomeBean.DataBean.TopicListBean> topicListBeans;
+    private TopicAdapter topicAdapter;
 
     @Nullable
     @Override
@@ -77,7 +80,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         virtualLayoutManager = new VirtualLayoutManager(getActivity());
         RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool();
         rv.setRecycledViewPool(pool);
-        pool.setMaxRecycledViews(0, 15);
+        pool.setMaxRecycledViews(0, 20);
 
         //第一行  banner
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
@@ -176,7 +179,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         hotGood.setSpanCount(1);// 设置每行多少个网格
         hotGoodAdapter = new HotGoodAdapter(getActivity(), hotGoodsListBeans, hotGood);
 
-
+//九
         SingleLayoutHelper zhuan = new SingleLayoutHelper();
         // 公共属性
         zhuan.setItemCount(1);// 设置布局里Item个数
@@ -185,6 +188,18 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         zhuan.setBgColor(Color.WHITE);// 设置背景颜色
         zhuan.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
         zhuanAdapter = new ZhuanAdapter(getActivity(), zhuan);
+
+        //十
+        SingleLayoutHelper topic = new SingleLayoutHelper();
+        topic.setItemCount(1);
+        topic.setBgColor(Color.WHITE);
+        topic.setMargin(10,10,10,10);
+        topic.setPadding(10,10,10,10);
+//        topic.setAspectRatio(6); //这个不能加  加了就出不来
+        topicAdapter = new TopicAdapter(getActivity(), topicListBeans, topic);
+
+        
+
 
         initAddAdapter();
     }
@@ -200,6 +215,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(hotAdapter);
         delegateAdapter.addAdapter(hotGoodAdapter);
         delegateAdapter.addAdapter(zhuanAdapter);
+        delegateAdapter.addAdapter(topicAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -212,6 +228,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         brandListBeans = new ArrayList<>();
         newGoodsListBeans = new ArrayList<>();
         hotGoodsListBeans = new ArrayList<>();
+        topicListBeans = new ArrayList<>();
 
     }
 
@@ -222,7 +239,6 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         List<HomeBean.DataBean.ChannelBean> channel = homeBean.getData().getChannel();
         channelBeans.addAll(channel);
         gridAdapter.notifyDataSetChanged();
-
         List<HomeBean.DataBean.BrandListBean> brandList = homeBean.getData().getBrandList();
         brandListBeans.addAll(brandList);
         brandAdapter.notifyDataSetChanged();
@@ -235,7 +251,9 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         hotGoodsListBeans.addAll(hotGoodsList);
         hotGoodAdapter.notifyDataSetChanged();
         zhuanAdapter.notifyDataSetChanged();
-
+        List<HomeBean.DataBean.TopicListBean> topicList = homeBean.getData().getTopicList();
+        topicListBeans.addAll(topicList);
+        topicAdapter.notifyDataSetChanged();
         initAddAdapter();
     }
 
