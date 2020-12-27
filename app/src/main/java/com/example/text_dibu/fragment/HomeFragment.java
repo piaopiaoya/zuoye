@@ -36,6 +36,8 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private ArrayList<HomeBean.DataBean.BannerBean> bannerBeans;
     private RecyclerView rv;
     private RvAdapter rvAdapter;
+    private GridAdapter gridAdapter;
+    private ArrayList<HomeBean.DataBean.ChannelBean> channelBeans;
 
     @Nullable
     @Override
@@ -55,7 +57,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         rv.setRecycledViewPool(pool);
         pool.setMaxRecycledViews(0,10);
 
-        //第一行
+        //第一行  banner
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
         singleLayoutHelper.setItemCount(1);
         singleLayoutHelper.setPadding(20,20,20,20);
@@ -64,12 +66,31 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         singleLayoutHelper.setAspectRatio(6);
         rvAdapter = new RvAdapter(bannerBeans,getActivity(), singleLayoutHelper);
 
-        //第二行  banner
+        //第二行
+        //设置Grid布局
+        GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(5);
+// 在构造函数设置每行的网格个数
+// 公共属性
+        gridLayoutHelper.setItemCount(5);// 设置布局里Item个数
+        gridLayoutHelper.setPadding(20, 20, 20, 20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        gridLayoutHelper.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        gridLayoutHelper.setBgColor(Color.WHITE);// 设置背景颜色
+        gridLayoutHelper.setAspectRatio(5);// 设置设置布局内每行布局的宽与高的比
+
+// gridLayoutHelper特有属性（下面会详细说明）
+        gridLayoutHelper.setWeights(new float[]{20, 20, 20, 20, 20});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+        gridLayoutHelper.setVGap(20);// 控制子元素之间的垂直间距
+        gridLayoutHelper.setHGap(20);// 控制子元素之间的水平间距
+        gridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
+        gridLayoutHelper.setSpanCount(5);// 设置每行多少个网格
+
+        gridAdapter = new GridAdapter(getActivity(),channelBeans,gridLayoutHelper);
 
 
 
         DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager, true);
         delegateAdapter.addAdapter(rvAdapter);
+        delegateAdapter.addAdapter(gridAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -81,6 +102,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private void initView(View view) {
         banner = view.findViewById(R.id.banner);
         bannerBeans = new ArrayList<>();
+        channelBeans = new ArrayList<>();
 
 
     }
