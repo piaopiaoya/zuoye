@@ -17,6 +17,7 @@ import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.text_dibu.R;
+import com.example.text_dibu.adapter.TuiAdapter;
 import com.example.text_dibu.adapter.GridAdapter;
 import com.example.text_dibu.adapter.RvAdapter;
 import com.example.text_dibu.bean.HomeBean;
@@ -36,6 +37,10 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private RvAdapter rvAdapter;
     private GridAdapter gridAdapter;
     private ArrayList<HomeBean.DataBean.ChannelBean> channelBeans;
+    private ArrayList<HomeBean.DataBean.BrandListBean> brandListBeans;
+    private TuiAdapter tuiAdapter;
+    private DelegateAdapter delegateAdapter;
+    private VirtualLayoutManager virtualLayoutManager;
 
     @Nullable
     @Override
@@ -50,10 +55,10 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
 
     private void initVLayout(View view) {
         rv = view.findViewById(R.id.rv);
-        VirtualLayoutManager virtualLayoutManager = new VirtualLayoutManager(getActivity());
+        virtualLayoutManager = new VirtualLayoutManager(getActivity());
         RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool();
         rv.setRecycledViewPool(pool);
-        pool.setMaxRecycledViews(0,10);
+        pool.setMaxRecycledViews(0,15);
 
         //第一行  banner
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
@@ -71,21 +76,36 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         gridLayoutHelper.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
         gridLayoutHelper.setBgColor(Color.WHITE);// 设置背景颜色
         gridLayoutHelper.setAspectRatio(5);// 设置设置布局内每行布局的宽与高的比
-
 // gridLayoutHelper特有属性（下面会详细说明）
         gridLayoutHelper.setWeights(new float[]{20, 20, 20, 20, 20});//设置每行中 每个网格宽度 占 每行总宽度 的比例
         gridLayoutHelper.setVGap(20);// 控制子元素之间的垂直间距
         gridLayoutHelper.setHGap(20);// 控制子元素之间的水平间距
         gridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
         gridLayoutHelper.setSpanCount(5);// 设置每行多少个网格
-
         gridAdapter = new GridAdapter(getActivity(),channelBeans,gridLayoutHelper);
 
+        //第三行
+        SingleLayoutHelper sing = new SingleLayoutHelper();
+        // 公共属性
+        sing.setItemCount(1);// 设置布局里Item个数
+        sing.setPadding(20, 20, 20, 20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        sing.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        sing.setBgColor(Color.GRAY);// 设置背景颜色
+        sing.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
+        tuiAdapter = new TuiAdapter(getActivity(),sing);
 
 
-        DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager, true);
+
+
+
+        initAddAdapter();
+    }
+
+    private void initAddAdapter() {
+        delegateAdapter = new DelegateAdapter(virtualLayoutManager, true);
         delegateAdapter.addAdapter(rvAdapter);
         delegateAdapter.addAdapter(gridAdapter);
+        delegateAdapter.addAdapter(tuiAdapter);
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -98,7 +118,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         banner = view.findViewById(R.id.banner);
         bannerBeans = new ArrayList<>();
         channelBeans = new ArrayList<>();
-
+        brandListBeans = new ArrayList<>();
 
     }
 
@@ -109,6 +129,10 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         List<HomeBean.DataBean.ChannelBean> channel = homeBean.getData().getChannel();
         channelBeans.addAll(channel);
         gridAdapter.notifyDataSetChanged();
+        initAddAdapter();
+        //        List<HomeBean.DataBean.BrandListBean> brandList = homeBean.getData().getBrandList();
+//        brandList.addAll(brandList);
+//        TuiAdapter.notifyDataSetChanged();
     }
 
     @Override

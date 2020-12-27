@@ -38,7 +38,7 @@ public class GridAdapter extends DelegateAdapter.Adapter<GridAdapter.ViewHolder>
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.grid_item, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.grid_item, null);
         return new ViewHolder(view);
     }
 
