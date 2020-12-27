@@ -15,23 +15,17 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/iv"
         app:layout_constraintLeft_toLeftOf="@id/iv"
-        android:id="@+id/title"/>
+        app:layout_constraintRight_toRightOf="@id/iv"
+        android:id="@+id/tv_name"
+        />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_price"
         android:textColor="@color/red"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/title"
-        app:layout_constraintLeft_toRightOf="@id/title"
-        android:id="@+id/tv_price"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintLeft_toLeftOf="@id/title"
-        android:id="@+id/subtitle"/>
-
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintLeft_toLeftOf="@id/tv_name"
+        app:layout_constraintRight_toRightOf="@id/tv_name"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

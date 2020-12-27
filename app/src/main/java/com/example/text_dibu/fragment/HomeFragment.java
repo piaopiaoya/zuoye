@@ -21,6 +21,8 @@ import com.example.text_dibu.R;
 import com.example.text_dibu.adapter.BrandAdapter;
 import com.example.text_dibu.adapter.HotAdapter;
 import com.example.text_dibu.adapter.HotGoodAdapter;
+import com.example.text_dibu.adapter.JuAdapter;
+import com.example.text_dibu.adapter.JuJiaAdapter;
 import com.example.text_dibu.adapter.NetGoodAdapter;
 import com.example.text_dibu.adapter.NewAdapter;
 import com.example.text_dibu.adapter.TopicAdapter;
@@ -59,6 +61,10 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
     private ZhuanAdapter zhuanAdapter;
     private ArrayList<HomeBean.DataBean.TopicListBean> topicListBeans;
     private TopicAdapter topicAdapter;
+    private JuAdapter juAdapter;
+    private ArrayList<HomeBean.DataBean.CategoryListBean> categoryListBeans;
+    private ArrayList<HomeBean.DataBean.CategoryListBean> categoryListBeans1;
+    private SingleLayoutHelper ju;
 
     @Nullable
     @Override
@@ -198,9 +204,15 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
 //        topic.setAspectRatio(6); //这个不能加  加了就出不来
         topicAdapter = new TopicAdapter(getActivity(), topicListBeans, topic);
 
+        //第三行4
+        ju = new SingleLayoutHelper();
+        // 公共属性
+        ju.setItemCount(1);// 设置布局里Item个数
+        ju.setPadding(10, 10, 10, 10);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        ju.setMargin(10, 10, 10, 10);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        ju.setBgColor(Color.WHITE);// 设置背景颜色
+        ju.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
         
-
-
         initAddAdapter();
     }
 
@@ -216,6 +228,7 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         delegateAdapter.addAdapter(hotGoodAdapter);
         delegateAdapter.addAdapter(zhuanAdapter);
         delegateAdapter.addAdapter(topicAdapter);
+
         rv.setLayoutManager(virtualLayoutManager);
         rv.setAdapter(delegateAdapter);
     }
@@ -255,6 +268,43 @@ public class HomeFragment extends Fragment implements MainContract.getBannerView
         topicListBeans.addAll(topicList);
         topicAdapter.notifyDataSetChanged();
         initAddAdapter();
+
+//        categoryListBeans = new ArrayList<>();
+
+        List<HomeBean.DataBean.CategoryListBean> categoryList = homeBean.getData().getCategoryList();
+//        categoryListBeans1.clear();
+//        categoryListBeans.addAll(categoryList);
+        for (int i = 0; i < categoryList.size(); i++) {
+            String name = categoryList.get(i).getName();
+            JuAdapter juAdapter = new JuAdapter(getActivity(), ju, name);
+            juAdapter.notifyDataSetChanged();
+
+            GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(2);
+            // 在构造函数设置每行的网格个数
+
+            // 公共属性
+            gridLayoutHelper.setItemCount(7);// 设置布局里Item个数
+//        gridLayoutHelper.setPadding(20, 20, 20, 20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+//        gridLayoutHelper.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+
+//        gridLayoutHelper.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
+
+            // gridLayoutHelper特有属性（下面会详细说明）
+            gridLayoutHelper.setWeights(new float[]{50,50});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+            gridLayoutHelper.setVGap(5);// 控制子元素之间的垂直间距
+            gridLayoutHelper.setHGap(5);// 控制子元素之间的水平间距
+            gridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
+            gridLayoutHelper.setSpanCount(2);// 设置每行多少个网格
+            gridLayoutHelper.setBgColor(Color.WHITE);// 设置背景颜色
+
+            List<HomeBean.DataBean.CategoryListBean.GoodsListBean> goodsList = categoryList.get(i).getGoodsList();
+            ArrayList<HomeBean.DataBean.CategoryListBean.GoodsListBean> goodsListBeans = new ArrayList<>();
+            goodsListBeans.addAll(goodsList);
+            JuJiaAdapter juJiaAdapter = new JuJiaAdapter(getActivity(), goodsListBeans, gridLayoutHelper);
+            juJiaAdapter.notifyDataSetChanged();
+            delegateAdapter.addAdapter(juAdapter);
+            delegateAdapter.addAdapter(juJiaAdapter);
+        }
     }
 
     @Override
